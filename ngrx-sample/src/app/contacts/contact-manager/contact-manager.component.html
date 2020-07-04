@@ -1,0 +1,10 @@
+<app-contact-form
+  [contact]="contact"
+  (update)="onUpdate($event)"
+  (add)="onAdd($event)">
+</app-contact-form>
+<app-contact-list 
+  [contacts]="contacts$ | async"
+  (delete)="onDelete($event)"
+  (view)="onSelect($event)">
+</app-contact-list>

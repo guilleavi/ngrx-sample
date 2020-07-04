@@ -1,29 +1,39 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import { AppComponent } from './app.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+// import { routerReducer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
-import { ContactFormComponent } from './contact-form/contact-form.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { environment } from 'src/environments/environment';
+import { reducers } from './core/states/root.reducer';
+
+const NGRX_IMPORTS = [
+  StoreModule.forRoot(reducers),
+  // StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+  EffectsModule.forRoot([]),
+  StoreDevtoolsModule.instrument({
+    name: 'ContactManagerNgRx',
+    maxAge: 25,
+    logOnly: environment.production
+  })
+];
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ContactFormComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true
-      }
-    })
+    ...NGRX_IMPORTS,
+    AppRoutingModule,
+    CoreModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
